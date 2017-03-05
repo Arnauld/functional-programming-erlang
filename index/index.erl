@@ -46,7 +46,7 @@ reverse([X | XS], Acc) -> reverse(XS, [X | Acc]).
 
 
 %%%
-%%%
+%%% Apply the Fun to transform all element of the list into a new list of transformed item.
 %%%
 map(Fun, XS) ->
   map(Fun, XS, []).
@@ -56,7 +56,7 @@ map(Fun, [X | XS], Acc) -> map(Fun, XS, [Fun(X) | Acc]).
 
 
 %%%
-%%%
+%%% Return a filtered list that contains only the item that match the filter.
 %%%
 filter(Fun, XS) ->
   filter(Fun, XS, []).
