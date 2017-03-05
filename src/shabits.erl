@@ -6,6 +6,7 @@
 %% ------------------------------------------------------------------
 
 -export([perimeter/1, area/1, enclose/1]).
+-export([bits/1, bits_tailrec/1]).
 
 
 %% ------------------------------------------------------------------
@@ -56,6 +57,20 @@ min_max([X | XS], Min, Max) when X < Min -> min_max(XS, X, Max);
 min_max([X | XS], Min, Max) when X > Max -> min_max(XS, Min, X);
 min_max([_ | XS], Min, Max) -> min_max(XS, Min, Max).
 
+
+bits(N) when is_integer(N), N >= 0 ->
+  bits0(N).
+
+bits0(0) -> 0;
+bits0(N) -> (N band 2#1) + bits0(N bsr 1).
+
+bits_tailrec(N) when is_integer(N), N >= 0 ->
+  bits_tailrec(N, 0).
+
+bits_tailrec(0, Acc) -> Acc;
+bits_tailrec(N, Acc) -> bits_tailrec(N bsr 1, (N band 2#1) + Acc).
+
+
 % -------------------------------------
 % TEST
 % -------------------------------------
@@ -84,3 +99,15 @@ area_test() ->
 enclose_test() ->
   ?assertEqual({rectangle, {0, 0}, {3, 4}}, enclose({rectangle, {0, 0}, {3, 4}})),
   ?assertEqual({rectangle, {0, 0}, {3, 4}}, enclose({triangle, {0, 0}, {3, 0}, {0, 4}})).
+
+bits_test() ->
+  ?assertEqual(0, bits(2#0)),
+  ?assertEqual(1, bits(2#1)),
+  ?assertEqual(3, bits(2#111)),
+  ?assertEqual(4, bits(2#100011100)).
+
+bits_tailrec_test() ->
+  ?assertEqual(0, bits_tailrec(2#0)),
+  ?assertEqual(1, bits_tailrec(2#1)),
+  ?assertEqual(3, bits_tailrec(2#111)),
+  ?assertEqual(4, bits_tailrec(2#100011100)).
