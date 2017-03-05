@@ -252,7 +252,7 @@ update_index(LineNb, [Word | Words], Index) ->
   update_index(LineNb, Words, NewIndex).
 
 %%%
-%%%
+%%% Fill the Index line by line.
 %%%
 index(_LinNb, [], Index) -> Index;
 index(LineNb, [Line | Lines], Index) ->
@@ -265,10 +265,15 @@ index(LineNb, [Line | Lines], Index) ->
   NewIndex = update_index(LineNb, Filtered, Index),
   index(LineNb + 1, Lines, NewIndex).
 
+%%%
+%%% Basic entry point that read the content of the file, and index all the lines one by one.
+%%% Index is then dumped into the standard output.
+%%%
 index_file(FileName) ->
   Lines = get_file_contents(FileName),
   Index = index(1, Lines, []),
-  io:format("Index: ~p~n", [Index]).
+  io:format("Index: ~p~n", [Index]),
+  Index.
 
 % -------------------------------------
 % TEST
